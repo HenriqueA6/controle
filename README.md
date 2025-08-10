@@ -12,7 +12,7 @@ O sistema será **linearizado** em torno de um ponto de operação específico p
 
 O controlador deve atender aos seguintes critérios de desempenho ao operar próximo ao ponto de equilíbrio especificado e rastrear uma referência degrau.
 
-![alt text](image.png)
+![Tanks System](ref/image.png)
 
 ### 🔹 Ponto de Equilíbrio para Linearização
 - **Altura no Tanque 1 (h₁):** 0,5 m  
