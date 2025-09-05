@@ -15,7 +15,7 @@ O controlador deve atender aos seguintes critérios de desempenho ao operar pró
 ![Tanks System](ref/image.png)
 
 ### 🔹 Ponto de Equilíbrio para Linearização
-- **Altura no Tanque 1 (h₁):** 0,5 m  
+- **Altura no Tanque 1 (h₁):** 0,6 m  
 - **Altura no Tanque 2 (h₂):** 0,3 m
 
 ### 🔹 Desempenho para um Degrau de Referência de 0,8 m
