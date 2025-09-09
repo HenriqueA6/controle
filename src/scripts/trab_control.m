@@ -1,10 +1,12 @@
+clear; clc; close all;
+
 %valores atuais de requisitos calculados a partir da funcao de
 %transferência
 wn_atual = 0.077;
-csi_atual = 0.364;
-pm_atual = 3.64;
-ms_atual = 14.328;
-tr_atual = 32.612;
+csi_atual = 0.158;
+pm_atual = 10;
+ms_atual = 60.49;
+tr_atual = 22.746;
 mag_atual = 0.0269;
 mag_esperada = 19.9;
 
