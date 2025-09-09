@@ -1,10 +1,10 @@
 clear; clc; close all;
 
-% Definição da variável de Laplace para a F. Transferência
+%% 1. Definição da variável de Laplace para a F. Transf
 s = tf('s');
 
 % F. Transferência do modelo linearizado: G(s) = delta_H2(s) / delta_U(s)
-G = 1.62 / (s^2 + 0.081*s - 0.006561);
+G = 1.62 / (s^2 + 0.243*s + 0.006);
 G.InputName = 'Vazão u';
 G.OutputName = 'Nível h2';
 disp('F. Transf. do modelo linearizado:');
@@ -13,9 +13,9 @@ display(G);
 %% 2. Definição dos Ganhos do Controlador PID
 % Ganhos calculados analiticamente pelo método do LGR com cancelamento de
 % polo -> MS < 5% e ts < 8s.
-Kp = 2.51; % aumenta a agressividade da reação do sist., logo aumenta MS
-Ki = 0.64; % elimina erro de reg. perm. 
-Kd = 5.37; % caráter preditivo sobre o erro -> atenua ação de controle -> aumenta o amortecimento, logo diminui o MS
+Kp = 0.6; % aumentaman a agressividade da reação do sist., logo aumenta MS
+Ki = 0.122; % elimina erro de reg. perm.
+Kd = 3; % caráter preditivo sobre o erro -> atenua ação de controle -> aumenta o amortecimento, logo diminui o MS -> a partir de 2.3 o sist começa  a querer ter um carater de 1 ordem
 
 % controlador PID
 C = pid(Kp, Ki, Kd);
@@ -35,7 +35,6 @@ polos_mf = pole(T);
 disp(' ');
 disp('Polos de MF:');
 disp(polos_mf);
-disp('Polos Dominantes devem estar próximos de -0.5 +/- 0.51j');
 
 %% 4. Simulação e Visualização da Resposta ao Degrau
 % Simulação da resposta a um degrau unitário na referência
