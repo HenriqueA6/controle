@@ -12,10 +12,10 @@ display(G);
 
 %% 2. Definição dos Ganhos do Controlador PID
 % Ganhos calculados analiticamente pelo método do LGR com cancelamento de
-% polo -> MS < 5% e ts < 8s.
-Kp = 0.6; % aumentaman a agressividade da reação do sist., logo aumenta MS
-Ki = 0.122; % elimina erro de reg. perm.
-Kd = 3; % caráter preditivo sobre o erro -> atenua ação de controle -> aumenta o amortecimento, logo diminui o MS -> a partir de 2.3 o sist começa  a querer ter um carater de 1 ordem
+% polo -> MS < 5% e tr < 8s.
+Kp = 0.439; % atende requisitos em 0.6 -> aumentaman a agressividade da reação do sist., logo aumenta MS
+Ki = 0.1; % atende requisitos em 0.122 -> elimina erro de reg. perm.
+Kd = 0.81; % atende requisitos em 3 -> caráter preditivo sobre o erro: atenua ação de controle (aumenta o amortecimento), logo diminui o MS -> a partir de 2.3 o sist começa  a querer ter um carater de 1 ordem
 
 % controlador PID
 C = pid(Kp, Ki, Kd);
@@ -39,16 +39,16 @@ disp(polos_mf);
 %% 4. Simulação e Visualização da Resposta ao Degrau
 % Simulação da resposta a um degrau unitário na referência
 figure;
-step(T);
+step(0.8*T);
 title('Resposta ao Degrau do Sistema Controlado com PID (Modelo Linear)');
-xlabel('Tempo (segundos)');
+xlabel('Tempo');
 ylabel('Amplitude da Saída (nível h2)');
 grid on;
 legend('Resposta de h2');
 
 % Exibição das métricas de desempenho no Command Window
-info = stepinfo(T);
+info = stepinfo(0.8*T);
 disp(' ');
 disp('Métricas de Desempenho da Resposta ao Degrau (Linear):');
-fprintf('Overshoot (MS): %.2f %%\n', info.Overshoot);
-fprintf('Tempo de Assentamento - Settling Time (tr): %.2f s\n', info.SettlingTime);
+fprintf('Overshoot (MS): %.3f %%\n', info.Overshoot);
+fprintf('Tempo de Subida (tr): %.3f s\n', info.RiseTime);
