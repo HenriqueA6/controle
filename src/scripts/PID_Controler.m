@@ -13,9 +13,9 @@ display(G);
 %% 2. Definição dos Ganhos do Controlador PID
 % Ganhos calculados analiticamente pelo método do LGR com cancelamento de
 % polo -> MS < 5% e tr < 8s.
-Kp = 0.439; % atende requisitos em 0.6 -> aumentaman a agressividade da reação do sist., logo aumenta MS
-Ki = 0.1; % atende requisitos em 0.122 -> elimina erro de reg. perm.
-Kd = 0.81; % atende requisitos em 3 -> caráter preditivo sobre o erro: atenua ação de controle (aumenta o amortecimento), logo diminui o MS -> a partir de 2.3 o sist começa  a querer ter um carater de 1 ordem
+Kp = 0.6; % atende requisitos em 0.6 -> aumentaman a agressividade da reação do sist., logo aumenta MS
+Ki = 0.122; % atende requisitos em 0.122 -> elimina erro de reg. perm.
+Kd = 1.75; % atende requisitos em 3 -> caráter preditivo sobre o erro: atenua ação de controle (aumenta o amortecimento), logo diminui o MS -> a partir de 2.3 o sist começa  a querer ter um carater de 1 ordem
 
 % controlador PID
 C = pid(Kp, Ki, Kd);
@@ -48,7 +48,15 @@ legend('Resposta de h2');
 
 % Exibição das métricas de desempenho no Command Window
 info = stepinfo(0.8*T);
+MS = info.Overshoot;
+zeta = sqrt(((log(MS/100))^2)/((pi^2)+((log(MS/100))^2)));
+tr = info.RiseTime;
+wn = (pi - acos(zeta))/ (tr*(sqrt(1-((zeta)^2)))); 
 disp(' ');
 disp('Métricas de Desempenho da Resposta ao Degrau (Linear):');
-fprintf('Overshoot (MS): %.3f %%\n', info.Overshoot);
-fprintf('Tempo de Subida (tr): %.3f s\n', info.RiseTime);
+fprintf('Overshoot (MS): %.3f %%\n', MS);
+fprintf('Tempo de Subida (tr): %.3f s\n', tr);
+disp(' ');
+disp('Parâmetros do sistema:');
+fprintf('Fator de Amortecimento: %.3f \n', zeta);
+fprintf('Frequência Natural: %.3f rad/s\n', wn);
