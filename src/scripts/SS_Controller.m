@@ -23,28 +23,28 @@ disp('--> Obtendo Polos desejados a partir dos requisitos de desempenho...');
 
 % Requisitos de desempenho para a malha fechada
 MS_max = 5;      % MS máximo [%]
-ts_max = 8;      % tr (critério 2%) [s]
+tr_max = 8;      % tr (critério 2%) [s]
 
 % Cálculo do fator de amortecimento (xi) a partir do sobressinal
-xi = -log(MS_max / 100) / sqrt(pi^2 + log(MS_max / 100)^2);
-fprintf('Fator de amortecimento mínimo (xi): %.3f\n', xi);
+xi_min = -log(MS_max / 100) / sqrt(pi^2 + log(MS_max / 100)^2);
+fprintf('Fator de amortecimento mínimo (xi_min): %.3f\n', xi_min);
 
-% A partir do tempo de assentamento, xi*wn > 4/ts
-xi_wn = 4 / ts_max;
-fprintf('Parte real mínima dos polos (xi*wn): %.3f\n', xi_wn);
+% Cálculo da frequência natural mínima (wn) a partir do tempo de subida
+wn_min = (pi - acos(xi_min)) / (tr_max * sqrt(1 - xi_min^2));
+fprintf('Frequência natural mínima (wn_min): %.3f rad/s\n', wn_min);
 
-% Escolha de projeto 
-xi_proj = 0.7; % -> xi >= 0.69
-xi_wn_proj = 0.6; % -> xi*wn > 0.5
+% Escolha de projeto -> contém uma pequena folga
+xi_proj = 0.7; % -> xi >= 0.690
+wn_proj = 0.5; % -> xi*wn > 0.403
 
-% Cálculo da frequência natural (wn) e frequência amortecida (wd)
-wn_proj = xi_wn_proj / xi_proj;
-wd_proj = wn_proj * sqrt(1 - xi_proj^2);
+% Cálculo da parte real e da parte complexa do polo desejável:
+parte_real = wn_proj * xi_proj;
+parte_complex = wn_proj * sqrt(1 - xi_proj^2);
 
 fprintf('Polo do controlador projetado para: xi=%.2f, wn=%.2f rad/s\n', xi_proj, wn_proj);
 
-p_controlador = [-xi_wn_proj + wd_proj*1i, -xi_wn_proj - wd_proj*1i];
-fprintf('Polos do controlador alocados em: %.3f +/- %.3fi\n\n', -xi_wn_proj, wd_proj);
+p_controlador = [-parte_real + parte_complex*1i, -parte_real - parte_complex*1i];
+fprintf('Polos do controlador alocados em: %.3f +/- %.3fi\n\n', -parte_real, parte_complex);
 
 
 %% 3. PROJETO DO REGULADOR
